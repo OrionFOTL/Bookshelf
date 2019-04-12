@@ -9,12 +9,11 @@ namespace BookshelfAPI.DbContexts
 {
     public class BookContext : DbContext
     {
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public BookContext(DbContextOptions options) : base(options)
         {
-            optionsBuilder.UseSqlite("Data Source=DbBook.db");
-        }
 
+        }
+        
         public DbSet<Book> Books { get; set; }
     }
 }

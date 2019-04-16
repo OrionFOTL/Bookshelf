@@ -43,7 +43,7 @@ namespace BookshelfAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = book.Id }, book);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Put(long id, Book book)
         {
             var bookToUpdate = await _bookRepository.Get(id);
@@ -52,7 +52,7 @@ namespace BookshelfAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             var bookToDelete = await _bookRepository.Get(id);

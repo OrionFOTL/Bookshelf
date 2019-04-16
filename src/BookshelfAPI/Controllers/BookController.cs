@@ -32,12 +32,15 @@ namespace BookshelfAPI.Controllers
         {
             var book = await _bookRepository.Get(id);
 
+            if (book == null) return NotFound("The book record couldn't be found.");
             return Ok(book);
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(Book book)
         {
+            if (book == null) return BadRequest("Book is null.");
+
             await _bookRepository.Add(book);
 
             return CreatedAtAction(nameof(Get), new { id = book.Id }, book);
@@ -47,6 +50,9 @@ namespace BookshelfAPI.Controllers
         public async Task<IActionResult> Put(long id, Book book)
         {
             var bookToUpdate = await _bookRepository.Get(id);
+
+            if (bookToUpdate == null) return NotFound("The book to update record couldn't be found.");
+
             await _bookRepository.Update(bookToUpdate, book);
 
             return NoContent();
@@ -56,6 +62,9 @@ namespace BookshelfAPI.Controllers
         public async Task<IActionResult> Delete(long id)
         {
             var bookToDelete = await _bookRepository.Get(id);
+
+            if (bookToDelete == null) return NotFound("The book to delete record couldn't be found.");
+
             await _bookRepository.Delete(bookToDelete);
 
             return NoContent();

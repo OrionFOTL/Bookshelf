@@ -1,0 +1,81 @@
+### Get all
+GET http://localhost:49477/api/book
+
+### Get specific
+GET http://localhost:49477/api/book/1
+
+### Get nonexisting
+GET http://localhost:49477/api/book/99999
+
+### Post new
+POST http://localhost:49477/api/book/
+Content-Type: application/json
+
+{
+    "title": "Ostatnie życzenie",
+    "author": "Andrzej Sapkowski",
+    "isbn": "8485540692298",
+    "year": 2001
+}
+
+### Post new with nonsense data
+POST http://localhost:49477/api/book/
+Content-Type: application/json
+
+{
+    "this": "model",
+    "json": "has",
+    "is": "different",
+    "wrong": "fields"
+}
+
+### Post new on existing ID
+POST http://localhost:49477/api/book/
+Content-Type: application/json
+
+{
+    "id": 1,
+    "title": "Ostatnie życzenie",
+    "author": "Andrzej Sapkowski",
+    "isbn": "8485540692298",
+    "year": 2001
+}
+
+### Update existing ID (modify as needed)
+PUT http://localhost:49477/api/book/1
+Content-Type: application/json
+
+{
+    "title": "Zbrodnia i ara",
+    "author": "Leopold Staff",
+    "isbn": "9781540692450",
+    "year": 1869
+}
+
+### Update existing ID with nonsense data
+PUT http://localhost:49477/api/book/1
+Content-Type: application/json
+
+{
+    "this": "model",
+    "json": "has",
+    "is": "different",
+    "wrong": "fields"
+}
+
+### Update nonexisting ID
+PUT http://localhost:49477/api/book/99999
+Content-Type: application/json
+
+{
+    "title": "Zbrodnia i ara",
+    "author": "Leopold Staff",
+    "isbn": "9781540692450",
+    "year": 1869
+}
+
+### Delete existing (make sure it exists before running)
+DELETE http://localhost:49477/api/book/2
+
+### Delete nonexisting
+DELETE http://localhost:49477/api/book/99999

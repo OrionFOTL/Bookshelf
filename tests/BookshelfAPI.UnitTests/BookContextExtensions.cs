@@ -45,6 +45,8 @@ namespace BookshelfAPI.UnitTests
                     Year = 1949
                 }
             );
+
+            dbContext.SaveChanges();
         }
     }
 }

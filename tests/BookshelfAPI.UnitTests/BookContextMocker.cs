@@ -14,6 +14,7 @@ namespace BookshelfAPI.UnitTests
         {
             var options = new DbContextOptionsBuilder<BookContext>()
                 .UseInMemoryDatabase(databaseName: dbName)
+                .EnableSensitiveDataLogging()
                 .Options;
 
             BookContext bookContext = new BookContext(options);

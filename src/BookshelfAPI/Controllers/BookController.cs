@@ -1,6 +1,7 @@
 ﻿using BookshelfAPI.Model;
 using BookshelfAPI.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,18 @@ namespace BookshelfAPI.Controllers
         {
             if (book == null) return BadRequest("Book is null.");
 
-            await _bookRepository.Add(book);
+            //var check = await _bookRepository.Get(book.Id);
+            //if (check.Id == book.Id) return Conflict("Book with specified ID already exists.");
+
+            try
+            {
+                await _bookRepository.Add(book);
+            }
+            catch (DbUpdateException)
+            {
+                return Conflict("Book with specified ID already exists.");
+            }
+            
 
             return CreatedAtAction(nameof(Get), new { id = book.Id }, book);
         }

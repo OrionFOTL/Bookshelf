@@ -49,7 +49,7 @@ namespace BookshelfAPI.Controllers
             {
                 await _bookRepository.Add(book);
             }
-            catch (DbUpdateException)
+            catch (Exception e)
             {
                 return Conflict("Book with specified ID already exists.");
             }

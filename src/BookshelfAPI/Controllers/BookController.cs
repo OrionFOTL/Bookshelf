@@ -53,7 +53,6 @@ namespace BookshelfAPI.Controllers
             {
                 return Conflict("Book with specified ID already exists.");
             }
-            
 
             return CreatedAtAction(nameof(Get), new { id = book.Id }, book);
         }
@@ -67,7 +66,7 @@ namespace BookshelfAPI.Controllers
 
             await _bookRepository.Update(bookToUpdate, book);
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -79,7 +78,7 @@ namespace BookshelfAPI.Controllers
 
             await _bookRepository.Delete(bookToDelete);
 
-            return NoContent();
+            return Ok();
         }
 
     }

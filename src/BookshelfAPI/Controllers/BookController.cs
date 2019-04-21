@@ -20,15 +20,26 @@ namespace BookshelfAPI.Controllers
             _bookRepository = bookRepository;
         }
 
+        /// <summary>
+        /// Gets all books.
+        /// </summary>
+        /// <returns>All books in repository.</returns>
+        /// <response code="200">Returns all books</response>
         [HttpGet]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> GetAll()
         {
             var books = await _bookRepository.GetAll();
 
             return Ok(books);
         }
-
+        /// <summary>
+        /// Gets book of specific id given.
+        /// </summary>
+        /// <returns>Book with given id.</returns>
+        /// <response code="200">Returns book with given id</response>
         [HttpGet("{id}", Name = "Get")]
+        [ProducesResponseType(200)]
         public async Task<IActionResult> Get(long id)
         {
             var book = await _bookRepository.Get(id);
@@ -37,7 +48,17 @@ namespace BookshelfAPI.Controllers
             return Ok(book);
         }
 
+        /// <summary>
+        /// Adds new book to database.
+        /// </summary>
+        /// <returns>The created book.</returns>
+        /// <response code="201">Returns newly created book.</response>
+        /// <response code="400">If the book to add is null</response>
+        /// <response code="409">If the book of given id already exists</response>
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(409)]
         public async Task<IActionResult> Post(Book book)
         {
             if (book == null) return BadRequest("Book is null.");
@@ -49,7 +70,7 @@ namespace BookshelfAPI.Controllers
             {
                 await _bookRepository.Add(book);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return Conflict("Book with specified ID already exists.");
             }
@@ -57,7 +78,15 @@ namespace BookshelfAPI.Controllers
             return CreatedAtAction(nameof(Get), new { id = book.Id }, book);
         }
 
+        /// <summary>
+        /// Updates data of book with given id.
+        /// </summary>
+        /// <returns>Success code</returns>
+        /// <response code="200">Returns code 200, OK.</response>
+        /// <response code="404">If a book with given id doesn't exist.</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> Put(long id, Book book)
         {
             var bookToUpdate = await _bookRepository.Get(id);
@@ -69,6 +98,12 @@ namespace BookshelfAPI.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Deletes book of given id.
+        /// </summary>
+        /// <returns>Success code</returns>
+        /// <response code="200">Returns code 200, OK.</response>
+        /// <response code="404">If a book with given id doesn't exist.</response>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {

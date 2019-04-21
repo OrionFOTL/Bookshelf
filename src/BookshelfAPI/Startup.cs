@@ -39,6 +39,9 @@ namespace BookshelfAPI
                     Title = "Bookshelf API",
                     Version = "v1"
                 });
+
+                var filePath = System.IO.Path.Combine(System.AppContext.BaseDirectory, "BookshelfAPI.xml");
+                c.IncludeXmlComments(filePath);
             });
         }
 

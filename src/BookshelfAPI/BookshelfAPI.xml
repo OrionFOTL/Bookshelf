@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BookshelfAPI</name>
+    </assembly>
+    <members>
+        <member name="M:BookshelfAPI.Controllers.BookController.GetAll">
+            <summary>
+            Gets all books.
+            </summary>
+            <returns>All books in repository.</returns>
+            <response code="200">Returns all books</response>
+        </member>
+        <member name="M:BookshelfAPI.Controllers.BookController.Get(System.Int64)">
+            <summary>
+            Gets book of specific id given.
+            </summary>
+            <returns>Book with given id.</returns>
+            <response code="200">Returns book with given id</response>
+        </member>
+        <member name="M:BookshelfAPI.Controllers.BookController.Post(BookshelfAPI.Model.Book)">
+            <summary>
+            Adds new book to database.
+            </summary>
+            <returns>The created book.</returns>
+            <response code="201">Returns newly created book.</response>
+            <response code="400">If the book to add is null</response>
+            <response code="409">If the book of given id already exists</response>
+        </member>
+        <member name="M:BookshelfAPI.Controllers.BookController.Put(System.Int64,BookshelfAPI.Model.Book)">
+            <summary>
+            Updates data of book with given id.
+            </summary>
+            <returns>Success code</returns>
+            <response code="200">Returns code 200, OK.</response>
+            <response code="404">If a book with given id doesn't exist.</response>
+        </member>
+        <member name="M:BookshelfAPI.Controllers.BookController.Delete(System.Int64)">
+            <summary>
+            Deletes book of given id.
+            </summary>
+            <returns>Success code</returns>
+            <response code="200">Returns code 200, OK.</response>
+            <response code="404">If a book with given id doesn't exist.</response>
+        </member>
+    </members>
+</doc>

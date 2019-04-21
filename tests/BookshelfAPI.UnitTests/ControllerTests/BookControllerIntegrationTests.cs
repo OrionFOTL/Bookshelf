@@ -88,6 +88,23 @@ namespace BookshelfAPI.UnitTests.Controllers
         }
         
         [Fact]
+        public async Task post_new_book_with_null()
+        {
+            // Arrange
+            var repository = BookContextMocker.GetInMemoryBookRepository(nameof(post_new_book));
+            var controller = new BookController(repository);
+            Book bookToInsert = null;
+            var expectedMessage = "Book is null.";
+
+            // Act
+            var response = await controller.Post(bookToInsert) as ObjectResult;
+
+            // Assert
+            Assert.Equal(StatusCodes.Status400BadRequest, response.StatusCode);
+            Assert.Equal(expectedMessage, response.Value);
+        }
+
+        [Fact]
         public async Task post_new_book_on_existing_id()
         {
             // Arrange

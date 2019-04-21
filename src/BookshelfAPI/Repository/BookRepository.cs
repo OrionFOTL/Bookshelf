@@ -48,5 +48,30 @@ namespace BookshelfAPI.Repository
             _dbContext.Books.Remove(book);
             await _dbContext.SaveChangesAsync();
         }
+
+        #region IDisposable
+
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                _dbContext.Dispose();
+            }
+
+            _disposed = true;
+        }
+
+        #endregion
     }
 }

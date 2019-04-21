@@ -11,7 +11,7 @@ using Xunit;
 
 namespace BookshelfAPI.UnitTests.Controllers
 {
-    public class BookControllerUnitTests
+    public class BookControllerIntegrationTests
     {
         [Fact]
         public async Task get_all_books()

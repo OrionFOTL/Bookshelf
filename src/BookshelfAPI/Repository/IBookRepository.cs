@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookshelfAPI.Repository
 {
-    public interface IBookRepository<TEntity>
+    public interface IBookRepository<TEntity> : IDisposable
     {
         Task<IEnumerable<TEntity>> GetAll();
         Task<TEntity> Get(long id);

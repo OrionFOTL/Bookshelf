@@ -145,7 +145,7 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         #region Post
 
         [Fact]
-        public async void Put_ForValidId_Returns201()
+        public async void Put_ForValidId_Returns200()
         {
             // Given
             var bookRepository = A.Fake<IBookRepository<Book>>();
@@ -160,6 +160,62 @@ namespace BookshelfAPI.UnitTests.ControllerTests
 
             // Then
             Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async void Put_ForInvalidId_Returns404WithMessage()
+        {
+            // Given
+            var bookRepository = A.Fake<IBookRepository<Book>>();
+            var bookController = MakeController(bookRepository);
+            var updatedBook = new Book { Id = 1, Author = "bb", Title = "cc", ISBN = "jk", Year = 2020 };
+
+            A.CallTo(() => bookRepository.Get(1)).Returns((Book) null);
+
+            // When
+            var result = await bookController.Put(1, updatedBook);
+
+            // Then
+            Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal("The book to update record couldn't be found.", ((NotFoundObjectResult)result).Value);
+        }
+
+        #endregion
+
+        #region Delete
+
+        [Fact]
+        public async void Delete_ForValidId_Returns200()
+        {
+            // Given
+            var bookRepository = A.Fake<IBookRepository<Book>>();
+            var bookController = MakeController(bookRepository);
+            var bookToDelete = new Book { Id = 1, Author = "bb", Title = "cc", ISBN = "jk", Year = 2020 };
+
+            A.CallTo(() => bookRepository.Get(1)).Returns(Task.FromResult(bookToDelete));
+
+            // When
+            var result = await bookController.Delete(1);
+
+            // Then
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public async void Delete_ForInvalidId_Returns404WithMessage()
+        {
+            // Given
+            var bookRepository = A.Fake<IBookRepository<Book>>();
+            var bookController = MakeController(bookRepository);
+
+            A.CallTo(() => bookRepository.Get(1)).Returns((Book) null);
+
+            // When
+            var result = await bookController.Delete(1);
+
+            // Then
+            Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal("The book to delete record couldn't be found.", ((NotFoundObjectResult)result).Value);
         }
 
         #endregion

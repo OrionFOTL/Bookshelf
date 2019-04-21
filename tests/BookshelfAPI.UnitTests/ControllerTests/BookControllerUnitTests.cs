@@ -101,7 +101,7 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         }
 
         [Fact]
-        public async void Post_ExistingId_Returns409WithMessage()
+        public async void Post_ForExistingId_Returns409WithMessage()
         {
             // Given
             var bookRepository = A.Fake<IBookRepository<Book>>();
@@ -118,11 +118,51 @@ namespace BookshelfAPI.UnitTests.ControllerTests
             Assert.Equal("Book with specified ID already exists.", (string)((ConflictObjectResult)result).Value);
         }
 
-        // ETC....
+        [Fact]
+        public async void Post_ForValidId_Returns201WithBook()
+        {
+            // Given
+            var bookRepository = A.Fake<IBookRepository<Book>>();
+            var bookController = MakeController(bookRepository);
+            var newBook = new Book { Id = 1, Author = "aa", Title = "bb", ISBN = "ih", Year = 2019 };
+
+            A.CallTo(() => bookRepository.Get(newBook.Id)).Returns(Task.FromResult(newBook));
+
+            // When
+            var result = await bookController.Post(newBook);
+
+            // Then
+            Assert.IsType<CreatedAtActionResult>(result);
+            Assert.Equal(newBook.Id, ((Book)((CreatedAtActionResult)result).Value).Id);
+            Assert.Equal(newBook.Title, ((Book)((CreatedAtActionResult)result).Value).Title);
+            Assert.Equal(newBook.Author, ((Book)((CreatedAtActionResult)result).Value).Author);
+            Assert.Equal(newBook.ISBN, ((Book)((CreatedAtActionResult)result).Value).ISBN);
+            Assert.Equal(newBook.Year, ((Book)((CreatedAtActionResult)result).Value).Year);
+        }
 
         #endregion
 
-        // ETC....
+        #region Post
+
+        [Fact]
+        public async void Put_ForValidId_Returns201()
+        {
+            // Given
+            var bookRepository = A.Fake<IBookRepository<Book>>();
+            var bookController = MakeController(bookRepository);
+            var bookToUpdate = new Book { Id = 1, Author = "aa", Title = "bb", ISBN = "ih", Year = 2019 };
+            var updatedBook = new Book { Id = 1, Author = "bb", Title = "cc", ISBN = "jk", Year = 2020 };
+
+            A.CallTo(() => bookRepository.Get(1)).Returns(Task.FromResult(bookToUpdate));
+
+            // When
+            var result = await bookController.Put(1, updatedBook);
+
+            // Then
+            Assert.IsType<OkResult>(result);
+        }
+
+        #endregion
 
         #region Helpers
 

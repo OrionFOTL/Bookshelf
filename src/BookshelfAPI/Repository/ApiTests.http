@@ -1,14 +1,14 @@
 ### Get all
-GET http://localhost:49477/api/book
+GET http://localhost:50759/api/book
 
 ### Get specific
-GET http://localhost:49477/api/book/1
+GET http://localhost:50759/api/book/1
 
 ### Get nonexisting
-GET http://localhost:49477/api/book/99999
+GET http://localhost:50759/api/book/99999
 
 ### Post new
-POST http://localhost:49477/api/book/
+POST http://localhost:50759/api/book/
 Content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### Post new with nonsense data
-POST http://localhost:49477/api/book/
+POST http://localhost:50759/api/book/
 Content-Type: application/json
 
 {
@@ -30,7 +30,7 @@ Content-Type: application/json
 }
 
 ### Post new on existing ID
-POST http://localhost:49477/api/book/
+POST http://localhost:50759/api/book/
 Content-Type: application/json
 
 {
@@ -42,7 +42,7 @@ Content-Type: application/json
 }
 
 ### Update existing ID (modify as needed)
-PUT http://localhost:49477/api/book/1
+PUT http://localhost:50759/api/book/1
 Content-Type: application/json
 
 {
@@ -53,7 +53,7 @@ Content-Type: application/json
 }
 
 ### Update existing ID with nonsense data
-PUT http://localhost:49477/api/book/1
+PUT http://localhost:50759/api/book/1
 Content-Type: application/json
 
 {
@@ -64,7 +64,7 @@ Content-Type: application/json
 }
 
 ### Update nonexisting ID
-PUT http://localhost:49477/api/book/99999
+PUT http://localhost:50759/api/book/99999
 Content-Type: application/json
 
 {
@@ -75,7 +75,7 @@ Content-Type: application/json
 }
 
 ### Delete existing (make sure it exists before running)
-DELETE http://localhost:49477/api/book/2
+DELETE http://localhost:50759/api/book/2
 
 ### Delete nonexisting
-DELETE http://localhost:49477/api/book/99999
+DELETE http://localhost:50759/api/book/99999

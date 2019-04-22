@@ -18,7 +18,7 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         [Fact]
         public async void GetAll_EndpointCalled_ReturnsBooksList()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
             IEnumerable<Book> books = new List<Book>()
@@ -30,10 +30,10 @@ namespace BookshelfAPI.UnitTests.ControllerTests
 
             A.CallTo(() => bookRepository.GetAll()).Returns(Task.FromResult(books));
 
-            // When
+            // Act
             var result = await bookController.GetAll();
 
-            // Then
+            // Assert
             Assert.IsType<OkObjectResult>(result);
             Assert.Equal(3, ((List<Book>)((OkObjectResult)result).Value).Count);
         }
@@ -45,16 +45,16 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         [Fact]
         public async void Get_ForNonExistingId_Returns400WithMessage()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
 
             A.CallTo(() => bookRepository.Get(1)).Returns(Task.FromResult<Book>(null));
 
-            // When
+            // Act
             var result = await bookController.Get(1);
 
-            // Then
+            // Assert
             Assert.IsType<NotFoundObjectResult>(result);
             Assert.Equal("The book record couldn't be found.", (string)((NotFoundObjectResult)result).Value);
         }
@@ -62,17 +62,17 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         [Fact]
         public async void Get_ForValidId_ReturnsBook()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
             var book = new Book { Id = 1, Author = "aa", Title = "bb", ISBN = "ih", Year = 2019 };
 
             A.CallTo(() => bookRepository.Get(1)).Returns(Task.FromResult(book));
 
-            // When
+            // Act
             var result = await bookController.Get(1);
 
-            // Then
+            // Assert
             Assert.IsType<OkObjectResult>(result);
             Assert.Equal(book.Id, ((Book)((OkObjectResult)result).Value).Id);
             Assert.Equal(book.Title, ((Book)((OkObjectResult)result).Value).Title);
@@ -88,14 +88,14 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         [Fact]
         public async void Post_ForNullArgument_Returns400WithMessage()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
 
-            // When
+            // Act
             var result = await bookController.Post(null);
 
-            // Then
+            // Assert
             Assert.IsType<BadRequestObjectResult>(result);
             Assert.Equal("Book is null.", (string)((BadRequestObjectResult)result).Value);
         }
@@ -103,17 +103,17 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         [Fact]
         public async void Post_ForExistingId_Returns409WithMessage()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
             var newBook = new Book { Id = 1, Author = "aa", Title = "bb", ISBN = "ih", Year = 2019 };
 
             A.CallTo(() => bookRepository.Add(newBook)).Throws(new System.InvalidOperationException());
 
-            // When
+            // Act
             var result = await bookController.Post(newBook);
 
-            // Then
+            // Assert
             Assert.IsType<ConflictObjectResult>(result);
             Assert.Equal("Book with specified ID already exists.", (string)((ConflictObjectResult)result).Value);
         }
@@ -121,17 +121,17 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         [Fact]
         public async void Post_ForValidId_Returns201WithBook()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
             var newBook = new Book { Id = 1, Author = "aa", Title = "bb", ISBN = "ih", Year = 2019 };
 
             A.CallTo(() => bookRepository.Get(newBook.Id)).Returns(Task.FromResult(newBook));
 
-            // When
+            // Act
             var result = await bookController.Post(newBook);
 
-            // Then
+            // Assert
             Assert.IsType<CreatedAtActionResult>(result);
             Assert.Equal(newBook.Id, ((Book)((CreatedAtActionResult)result).Value).Id);
             Assert.Equal(newBook.Title, ((Book)((CreatedAtActionResult)result).Value).Title);
@@ -147,7 +147,7 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         [Fact]
         public async void Put_ForValidId_Returns200()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
             var bookToUpdate = new Book { Id = 1, Author = "aa", Title = "bb", ISBN = "ih", Year = 2019 };
@@ -155,27 +155,27 @@ namespace BookshelfAPI.UnitTests.ControllerTests
 
             A.CallTo(() => bookRepository.Get(1)).Returns(Task.FromResult(bookToUpdate));
 
-            // When
+            // Act
             var result = await bookController.Put(1, updatedBook);
 
-            // Then
+            // Assert
             Assert.IsType<OkResult>(result);
         }
 
         [Fact]
         public async void Put_ForInvalidId_Returns404WithMessage()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
             var updatedBook = new Book { Id = 1, Author = "bb", Title = "cc", ISBN = "jk", Year = 2020 };
 
             A.CallTo(() => bookRepository.Get(1)).Returns((Book) null);
 
-            // When
+            // Act
             var result = await bookController.Put(1, updatedBook);
 
-            // Then
+            // Assert
             Assert.IsType<NotFoundObjectResult>(result);
             Assert.Equal("The book to update record couldn't be found.", ((NotFoundObjectResult)result).Value);
         }
@@ -187,33 +187,33 @@ namespace BookshelfAPI.UnitTests.ControllerTests
         [Fact]
         public async void Delete_ForValidId_Returns200()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
             var bookToDelete = new Book { Id = 1, Author = "bb", Title = "cc", ISBN = "jk", Year = 2020 };
 
             A.CallTo(() => bookRepository.Get(1)).Returns(Task.FromResult(bookToDelete));
 
-            // When
+            // Act
             var result = await bookController.Delete(1);
 
-            // Then
+            // Assert
             Assert.IsType<OkResult>(result);
         }
 
         [Fact]
         public async void Delete_ForInvalidId_Returns404WithMessage()
         {
-            // Given
+            // Arrange
             var bookRepository = A.Fake<IBookRepository<Book>>();
             var bookController = MakeController(bookRepository);
 
             A.CallTo(() => bookRepository.Get(1)).Returns((Book) null);
 
-            // When
+            // Act
             var result = await bookController.Delete(1);
 
-            // Then
+            // Assert
             Assert.IsType<NotFoundObjectResult>(result);
             Assert.Equal("The book to delete record couldn't be found.", ((NotFoundObjectResult)result).Value);
         }
